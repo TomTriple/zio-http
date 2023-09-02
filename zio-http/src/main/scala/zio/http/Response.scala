@@ -223,6 +223,27 @@ object Response {
       Body.fromString("<!DOCTYPE html>" + data.encode),
     )
 
+  def html2(data: zio.http.tpl.Html, status: Status = Status.Ok): Response =
+    Response(
+      status,
+      contentTypeHtml,
+      Body.fromString("<!DOCTYPE html>" + data.encode),
+    )  
+
+  def html3(data: zio.http.ttt.Html.Node, status: Status = Status.Ok): Response =
+    Response(
+      status, 
+      contentTypeHtml,
+      Body.fromString("<!DOCTYPE html>" + data.encode(1)),
+    )
+
+  def html3(a: zio.http.ttt.Html.Node, as: zio.http.ttt.Html.Node*): Response =
+    Response(
+      Status.Ok, 
+      contentTypeHtml,
+      Body.fromString("<!DOCTYPE html>" + as.foldLeft(a)(_ ++ _).encode(1)),
+    )    
+
   def httpVersionNotSupported: Response = error(Status.HttpVersionNotSupported)
 
   def httpVersionNotSupported(message: String): Response = error(Status.HttpVersionNotSupported, message)
